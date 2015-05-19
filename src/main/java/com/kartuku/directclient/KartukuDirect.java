@@ -38,6 +38,7 @@ import com.kartuku.directclient.model.response.OttResponse;
 import com.kartuku.directclient.util.CommonUtil;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
@@ -133,7 +134,9 @@ public class KartukuDirect {
             String result = CommonUtil.sendPostRequest(url, payload, connectionTimeout);
             return result;
         } catch (MalformedURLException ex) {
-            throw new KartukuDirectException(String.format("URL is %s invalid", urlString), ex);
+            throw new KartukuDirectException(String.format("URL %s is invalid", urlString), ex);
+        } catch(SocketTimeoutException ex){
+            throw new KartukuDirectException("Time out while connecting to server.", ex);
         } catch (IOException ex) {
             throw new KartukuDirectException("Failed when connecting to server", ex);
         }
@@ -161,7 +164,7 @@ public class KartukuDirect {
         try {
             return objectMapper.readValue(message, type);
         } catch (IOException ex) {
-            throw new KartukuDirectException("Failed to parse message from json format.", ex);
+            throw new KartukuDirectException(String.format("Failed to parse message from json format. Message : [%s]", message), ex);
         }
     }
 

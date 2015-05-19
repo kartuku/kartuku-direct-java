@@ -52,7 +52,7 @@ public class CommonUtil {
     public static final String URL_TOKEN_STORE    = "/card/token/store";
     public static final String URL_TOKEN_LIST     = "/card/token/list";
     public static final String URL_TOKEN_REMOVE   = "/card/token/remove";
-    public static final String URL_ONE_TIME_TOKEN = "/card/ott/v2/";
+    public static final String URL_ONE_TIME_TOKEN = "/card/ott";
     
     private static final SimpleDateFormat ipgDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     
@@ -133,11 +133,11 @@ public class CommonUtil {
         return new String(decodedBytes);
     }
 
-    public static String sendPostRequest(URL url, String payload, int connectionTimeout) throws IOException {
+    public static String sendPostRequest(URL url, String payload, int connectionTimeout) throws SocketTimeoutException, IOException {
         return url.getProtocol().startsWith("https")? sendHttpsPost(url, payload, connectionTimeout) : sendHttpPost(url, payload, connectionTimeout);
     }
     
-    private static String sendHttpsPost(URL url, String payload, int connectionTimeout) throws IOException {
+    private static String sendHttpsPost(URL url, String payload, int connectionTimeout) throws SocketTimeoutException, IOException {
         HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
         con.setConnectTimeout(connectionTimeout);
         con.setReadTimeout(connectionTimeout);
@@ -147,7 +147,7 @@ public class CommonUtil {
         return getMessage(con);
     }
     
-    private static String sendHttpPost(URL url, String payload, int connectionTimeout) throws IOException {
+    private static String sendHttpPost(URL url, String payload, int connectionTimeout) throws SocketTimeoutException, IOException {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setConnectTimeout(connectionTimeout);
         con.setReadTimeout(connectionTimeout);
@@ -157,7 +157,7 @@ public class CommonUtil {
         return getMessage(con);
     }
 
-    private static void writeToConnection(URLConnection connection, String payload) throws IOException {
+    private static void writeToConnection(URLConnection connection, String payload) throws SocketTimeoutException, IOException {
         connection.setDoOutput(true);
         DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
         outputStream.writeBytes(payload);
