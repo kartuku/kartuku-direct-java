@@ -5,12 +5,15 @@
  */
 package com.kartuku.directclient.model.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kartuku.directclient.model.Request;
 
 /**
- *
  * @author mfachri
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class QueryRequest extends Request {
 
     //-- refer to previous process gateway

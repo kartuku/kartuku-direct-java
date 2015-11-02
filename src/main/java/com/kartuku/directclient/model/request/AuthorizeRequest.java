@@ -5,14 +5,17 @@
  */
 package com.kartuku.directclient.model.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kartuku.directclient.model.Request;
 
 /**
- *
  * @author mfachri
  */
-public class AuthorizeRequest extends Request{
-    
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class AuthorizeRequest extends Request {
+
     private String merchantUserCode;
     private String txnTradingDate;
     private String txnStoreCode;
@@ -33,7 +36,7 @@ public class AuthorizeRequest extends Request{
     private String cardToken;
 
     //-- only if using Tokenization Token instead of OTT
-    private String cardCVV;    
+    private String cardCVV;
     //-- bin filtering, separated by colon ':'.
     private String filterBin;
     //-- card type filtering, separated by colon ':'.
@@ -75,7 +78,8 @@ public class AuthorizeRequest extends Request{
     }
 
     /**
-     * @param txnTradingDate the txnTradingDate to set format YYYY-MM-DD HH:mm:ss example 2015-04-24 09:46:13
+     * @param txnTradingDate the txnTradingDate to set format YYYY-MM-DD
+     *                       HH:mm:ss example 2015-04-24 09:46:13
      */
     public void setTxnTradingDate(String txnTradingDate) {
         this.txnTradingDate = txnTradingDate;

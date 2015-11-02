@@ -5,12 +5,15 @@
  */
 package com.kartuku.directclient.model.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kartuku.directclient.model.Response;
 
 /**
- *
  * @author mfachri
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PurchaseResponse extends Response {
 
     private String cardExpiry;
@@ -32,7 +35,8 @@ public class PurchaseResponse extends Response {
     private String txnResponseCode;
     private String txnTradingDate;
     private String txnStoreCode;
-    
+    private String paymentBrand;
+
     /**
      * @return the cardExpiry
      */
@@ -395,5 +399,13 @@ public class PurchaseResponse extends Response {
      */
     public void setTxnStoreCode(String txnStoreCode) {
         this.txnStoreCode = txnStoreCode;
+    }
+
+    public String getPaymentBrand() {
+        return paymentBrand;
+    }
+
+    public void setPaymentBrand(String paymentBrand) {
+        this.paymentBrand = paymentBrand;
     }
 }

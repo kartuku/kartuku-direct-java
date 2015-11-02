@@ -6,26 +6,25 @@
 package com.kartuku.directclient.model;
 
 /**
- *
  * @author mfachri
  */
 public class MessageWrapper extends Message {
     private String message;
     private String messageDigest;
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public String getMessage() {
         return message;
     }
 
-    public void setMessageDigest(String messageDigest) {
-        this.messageDigest = messageDigest;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getMessageDigest() {
         return messageDigest;
+    }
+
+    public void setMessageDigest(String messageDigest) {
+        this.messageDigest = messageDigest;
     }
 }

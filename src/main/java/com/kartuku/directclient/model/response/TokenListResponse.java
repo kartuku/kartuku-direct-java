@@ -5,14 +5,18 @@
  */
 package com.kartuku.directclient.model.response;
 
-import com.kartuku.directclient.model.Response;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kartuku.directclient.model.CardToken;
+import com.kartuku.directclient.model.Response;
+
 import java.util.List;
 
 /**
- *
  * @author mfachri
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TokenListResponse extends Response {
 
     private List<CardToken> cardTokens;

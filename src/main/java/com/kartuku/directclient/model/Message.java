@@ -6,9 +6,8 @@
 package com.kartuku.directclient.model;
 
 /**
- *
  * @author mfachri
  */
 public abstract class Message {
-    
+
 }

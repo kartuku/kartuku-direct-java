@@ -6,7 +6,6 @@
 package com.kartuku.directclient.model;
 
 /**
- *
  * @author mfachri
  */
 public class CardToken {

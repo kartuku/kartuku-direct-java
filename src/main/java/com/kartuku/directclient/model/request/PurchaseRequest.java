@@ -5,15 +5,22 @@
  */
 package com.kartuku.directclient.model.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kartuku.directclient.model.Request;
 
 /**
- *
  * @author mfachri
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PurchaseRequest extends Request {
 
     private String merchantUserCode;
+
+    //-- optional parameter to choose gateway. e.g.: PREPAID
+    private String ipgGateway = "";
+
     private String txnTradingDate;
     private String txnStoreCode;
 
@@ -65,6 +72,14 @@ public class PurchaseRequest extends Request {
      */
     public void setMerchantUserCode(String merchantUserCode) {
         this.merchantUserCode = merchantUserCode;
+    }
+
+    public String getIpgGateway() {
+        return ipgGateway;
+    }
+
+    public void setIpgGateway(String ipgGateway) {
+        this.ipgGateway = ipgGateway;
     }
 
     /**

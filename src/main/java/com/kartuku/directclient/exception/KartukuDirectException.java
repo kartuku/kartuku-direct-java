@@ -7,7 +7,7 @@ package com.kartuku.directclient.exception;
 
 /**
  * Exception related to DirectApi process.
- * 
+ *
  * @author mfachri
  */
 public class KartukuDirectException extends Exception {

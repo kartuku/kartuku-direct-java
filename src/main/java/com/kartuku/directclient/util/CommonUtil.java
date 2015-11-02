@@ -1,62 +1,49 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.kartuku.directclient.util;
 
 import com.kartuku.directclient.exception.KartukuDirectException;
 import com.kartuku.directclient.model.Request;
-import com.kartuku.directclient.model.request.AuthorizeRequest;
-import com.kartuku.directclient.model.request.CaptureRequest;
-import com.kartuku.directclient.model.request.OttRequest;
-import com.kartuku.directclient.model.request.PurchaseRequest;
-import com.kartuku.directclient.model.request.QueryRequest;
-import com.kartuku.directclient.model.request.RefundRequest;
-import com.kartuku.directclient.model.request.TokenListRequest;
-import com.kartuku.directclient.model.request.TokenRemoveRequest;
-import com.kartuku.directclient.model.request.TokenStoreRequest;
-import com.kartuku.directclient.model.request.VoidAuthorizeRequest;
-import com.kartuku.directclient.model.request.VoidCaptureRequest;
-import com.kartuku.directclient.model.request.VoidPurchaseRequest;
-import com.kartuku.directclient.model.request.VoidRefundRequest;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import com.kartuku.directclient.model.request.*;
+import org.apache.commons.codec.binary.Base64;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.net.ssl.HttpsURLConnection;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.net.ssl.HttpsURLConnection;
-import org.apache.commons.codec.binary.Base64;
 
 /**
- *
  * @author mfachri
  */
-
 public class CommonUtil {
-    public static final String URL_PURCHASE       = "/direct/purchase";
-    public static final String URL_AUTHORIZE      = "/direct/authorize";
-    public static final String URL_CAPTURE        = "/direct/capture";
-    public static final String URL_QUERY          = "/direct/query";
-    public static final String URL_REFUND         = "/direct/refund";
-    public static final String URL_VOID_CAPTURE   = "/direct/voidCapture";
-    public static final String URL_VOID_PURCHASE  = "/direct/voidPurchase";
-    public static final String URL_VOID_REFUND    = "/direct/voidRefund";
+
+    public static final String URL_PURCHASE = "/direct/purchase";
+    public static final String URL_AUTHORIZE = "/direct/authorize";
+    public static final String URL_CAPTURE = "/direct/capture";
+    public static final String URL_QUERY = "/direct/query";
+    public static final String URL_REFUND = "/direct/refund";
+    public static final String URL_VOID_CAPTURE = "/direct/voidCapture";
+    public static final String URL_VOID_PURCHASE = "/direct/voidPurchase";
+    public static final String URL_VOID_REFUND = "/direct/voidRefund";
     public static final String URL_VOID_AUTHORIZE = "/direct/voidAuthorize";
-    public static final String URL_TOKEN_STORE    = "/card/token/store";
-    public static final String URL_TOKEN_LIST     = "/card/token/list";
-    public static final String URL_TOKEN_REMOVE   = "/card/token/remove";
+    public static final String URL_TOKEN_STORE = "/card/token/store";
+    public static final String URL_TOKEN_LIST = "/card/token/list";
+    public static final String URL_TOKEN_REMOVE = "/card/token/remove";
     public static final String URL_ONE_TIME_TOKEN = "/card/ott";
-    
+
     private static final SimpleDateFormat ipgDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    
-    public static String calculateDigest(String message, String digestKey) throws KartukuDirectException{
+
+    public static String calculateDigest(String message, String digestKey) throws KartukuDirectException {
         String digest = null;
         try {
             SecretKeySpec key = new SecretKeySpec((digestKey).getBytes("UTF-8"), "HmacSHA256");
@@ -78,37 +65,37 @@ public class CommonUtil {
             throw new KartukuDirectException("Cannot calculate hash.", e);
         }
         return digest.toUpperCase();
-    }    
-    
+    }
+
     public static String getCommandUrl(Request request) throws KartukuDirectException {
-        if(request instanceof PurchaseRequest){
+        if (request instanceof PurchaseRequest) {
             return URL_PURCHASE;
-        }else if(request instanceof AuthorizeRequest){
+        } else if (request instanceof AuthorizeRequest) {
             return URL_AUTHORIZE;
-        }else if(request instanceof CaptureRequest){
+        } else if (request instanceof CaptureRequest) {
             return URL_CAPTURE;
-        }else if(request instanceof QueryRequest){
+        } else if (request instanceof QueryRequest) {
             return URL_QUERY;
-        }else if(request instanceof RefundRequest){
+        } else if (request instanceof RefundRequest) {
             return URL_REFUND;
-        }else if(request instanceof VoidCaptureRequest){
+        } else if (request instanceof VoidCaptureRequest) {
             return URL_VOID_CAPTURE;
-        }else if(request instanceof VoidPurchaseRequest){
+        } else if (request instanceof VoidPurchaseRequest) {
             return URL_VOID_PURCHASE;
-        }else if(request instanceof VoidAuthorizeRequest){
+        } else if (request instanceof VoidAuthorizeRequest) {
             return URL_VOID_AUTHORIZE;
-        }else if(request instanceof VoidRefundRequest){
+        } else if (request instanceof VoidRefundRequest) {
             return URL_VOID_REFUND;
-        }else if(request instanceof TokenStoreRequest){
+        } else if (request instanceof TokenStoreRequest) {
             return URL_TOKEN_STORE;
-        }else if(request instanceof TokenListRequest){
+        } else if (request instanceof TokenListRequest) {
             return URL_TOKEN_LIST;
-        }else if(request instanceof TokenRemoveRequest){
+        } else if (request instanceof TokenRemoveRequest) {
             return URL_TOKEN_REMOVE;
-        }else if(request instanceof OttRequest){
+        } else if (request instanceof OttRequest) {
             return URL_ONE_TIME_TOKEN;
         }
-        throw new KartukuDirectException(String.format("Request URL for %s is not found.", request.getClass().getName()));        
+        throw new KartukuDirectException(String.format("Request URL for %s is not found.", request.getClass().getName()));
     }
 
     /**
@@ -133,11 +120,11 @@ public class CommonUtil {
         return new String(decodedBytes);
     }
 
-    public static String sendPostRequest(URL url, String payload, int connectionTimeout) throws SocketTimeoutException, IOException {
-        return url.getProtocol().startsWith("https")? sendHttpsPost(url, payload, connectionTimeout) : sendHttpPost(url, payload, connectionTimeout);
+    public static String sendPostRequest(URL url, String payload, int connectionTimeout) throws KartukuDirectException, SocketTimeoutException, IOException {
+        return url.getProtocol().startsWith("https") ? sendHttpsPost(url, payload, connectionTimeout) : sendHttpPost(url, payload, connectionTimeout);
     }
-    
-    private static String sendHttpsPost(URL url, String payload, int connectionTimeout) throws SocketTimeoutException, IOException {
+
+    private static String sendHttpsPost(URL url, String payload, int connectionTimeout) throws KartukuDirectException, SocketTimeoutException, IOException {
         HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
         con.setConnectTimeout(connectionTimeout);
         con.setReadTimeout(connectionTimeout);
@@ -146,8 +133,8 @@ public class CommonUtil {
         writeToConnection(con, payload);
         return getMessage(con);
     }
-    
-    private static String sendHttpPost(URL url, String payload, int connectionTimeout) throws SocketTimeoutException, IOException {
+
+    private static String sendHttpPost(URL url, String payload, int connectionTimeout) throws KartukuDirectException, SocketTimeoutException, IOException {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setConnectTimeout(connectionTimeout);
         con.setReadTimeout(connectionTimeout);
@@ -157,7 +144,7 @@ public class CommonUtil {
         return getMessage(con);
     }
 
-    private static void writeToConnection(URLConnection connection, String payload) throws SocketTimeoutException, IOException {
+    private static <T extends HttpURLConnection> void writeToConnection(T connection, String payload) throws SocketTimeoutException, IOException {
         connection.setDoOutput(true);
         DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
         outputStream.writeBytes(payload);
@@ -165,7 +152,21 @@ public class CommonUtil {
         outputStream.close();
     }
 
-    private static String getMessage(URLConnection connection) throws SocketTimeoutException, IOException {
+    private static <T extends HttpURLConnection> String getMessage(T connection) throws KartukuDirectException, SocketTimeoutException, IOException {
+        if (connection.getResponseCode() < 200 || connection.getResponseCode() >= 300) {
+            if (connection.getErrorStream() == null) {
+                throw new IOException();
+            }
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(connection.getErrorStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            throw new KartukuDirectException(response.toString());
+        }
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(connection.getInputStream()));
         String inputLine;
@@ -176,7 +177,7 @@ public class CommonUtil {
         in.close();
         return response.toString();
     }
-    
+
     /**
      * Convert date to acceptable format
      *

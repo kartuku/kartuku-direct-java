@@ -5,15 +5,18 @@
  */
 package com.kartuku.directclient.model.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kartuku.directclient.model.Response;
 
 /**
- *
  * @author mfachri
  */
-public class OttResponse extends Response{
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class OttResponse extends Response {
     private String token;
-    private String url;        
+    private String url;
     private String message;
 
     /**

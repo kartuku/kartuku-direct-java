@@ -5,14 +5,17 @@
  */
 package com.kartuku.directclient.model.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kartuku.directclient.model.Request;
 
 /**
- *
  * @author mfachri
  */
-public class TokenListRequest extends Request{
-    
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class TokenListRequest extends Request {
+
     private String merchantUserCode;
 
     /**
@@ -43,5 +46,5 @@ public class TokenListRequest extends Request{
         this.merchantUserCode = merchantUserCode;
     }
 
-    
+
 }

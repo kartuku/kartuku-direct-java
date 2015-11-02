@@ -7,7 +7,7 @@ package com.kartuku.directclient.exception;
 
 /**
  * Exception related to signature validation.
- * 
+ *
  * @author mfachri
  */
 public class NoSignatureException extends KartukuDirectException {
@@ -26,5 +26,5 @@ public class NoSignatureException extends KartukuDirectException {
     public NoSignatureException(String message, Throwable cause) {
         super(message, cause);
     }
-    
+
 }
